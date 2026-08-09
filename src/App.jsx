@@ -92,7 +92,7 @@ function Shell({data,refresh,notify}) {
   async function logout(){await supabase.auth.signOut();navigate("/");}
   return <div className="app-shell">
     <aside className={`sidebar ${open?"open":""}`}>
-      <div className="side-brand"><div className="brand-mark small"><GraduationCap size={36}/></div><div><b>Pulsar</b><span>Admin panel</span></div><button className="mobile-close icon-btn" onClick={()=>setOpen(false)}><X size={18}/></button></div>
+      <div className="side-brand"><div className="brand-mark small"><img src="/icons/pulsar-192.png" alt="Pulsar" className="brand-icon" width={36} /></div><div><b>Pulsar</b><span>Admin panel</span></div><button className="mobile-close icon-btn" onClick={()=>setOpen(false)}><X size={18}/></button></div>
       <nav>{menu.map(([to,label,Icon])=><NavLink key={to} to={to} end={to==="/"} onClick={()=>setOpen(false)} className={({isActive})=>isActive?"active":""}><Icon size={18}/><span>{label}</span></NavLink>)}</nav>
       <button className="logout" onClick={logout}><LogOut size={18}/> Chiqish</button>
     </aside>

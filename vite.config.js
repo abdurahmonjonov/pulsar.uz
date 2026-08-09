@@ -5,16 +5,22 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     react(),
+
     VitePWA({
       registerType: 'autoUpdate',
+
       manifest: {
         name: 'Pulsar',
         short_name: 'Pulsar',
         description: 'Pulsar - o‘quvchilar va to‘lovlarni boshqarish tizimi',
+
         theme_color: '#111827',
         background_color: '#ffffff',
+
         display: 'standalone',
         start_url: '/',
+        scope: '/',
+
         icons: [
           {
             src: '/icons/pulsar-192.png',

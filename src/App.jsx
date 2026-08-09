@@ -82,7 +82,7 @@ function App() {
   if(!session) return <Login onLogin={()=>setRefresh(x=>x+1)}/>;
   return <Shell data={data} refresh={()=>setRefresh(x=>x+1)} notify={notify}/>;
 }
-function Shell({data, refresh, notify}) {
+function Shell({ data, refresh, notify }) {
   const [open, setOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -102,7 +102,7 @@ function Shell({data, refresh, notify}) {
 
       <aside className={`sidebar ${open ? "open" : ""}`}>
 
-        {/* Pulsar Logo */}
+        {/* Pulsar */}
         <div className="brand">
           <img
             src="/icons/pulsar-192.png"
@@ -116,7 +116,6 @@ function Shell({data, refresh, notify}) {
           </div>
         </div>
 
-        {/* Mobile close */}
         <button
           className="mobile-close icon-btn"
           onClick={() => setOpen(false)}
@@ -124,8 +123,8 @@ function Shell({data, refresh, notify}) {
           <X size={20} />
         </button>
 
-        {/* Navigation */}
-        <nav className="sidebar-nav">
+        {/* Menu */}
+        <nav>
           {menu.map(([to, label, Icon]) => (
             <NavLink
               key={to}
@@ -142,21 +141,17 @@ function Shell({data, refresh, notify}) {
           ))}
         </nav>
 
-        {/* Logout */}
-        <button
-          className="logout-btn"
-          onClick={logout}
-        >
+        {/* Chiqish */}
+        <button className="logout-btn" onClick={logout}>
           <LogOut size={19} />
           <span>Chiqish</span>
         </button>
 
       </aside>
 
-      {/* Main area */}
-      <main className="main-content">
+      <section className="main">
 
-        {/* Mobile menu button */}
+        {/* Mobile menu */}
         <button
           className="icon-btn mobile-menu"
           onClick={() => setOpen(true)}
@@ -179,7 +174,6 @@ function Shell({data, refresh, notify}) {
             </p>
           </div>
 
-          {/* Profile */}
           <div className="profile-wrapper">
 
             <button
@@ -207,6 +201,7 @@ function Shell({data, refresh, notify}) {
 
         {/* Pages */}
         <div className="page-content">
+
           <Routes>
 
             <Route
@@ -293,13 +288,14 @@ function Shell({data, refresh, notify}) {
             />
 
           </Routes>
+
         </div>
 
-      </main>
+      </section>
 
     </div>
   );
-} 
+}
 function PageHead({title,desc,button,onClick}) {
   return <div className="page-head"><div><h1>{title}</h1>{desc&&<p>{desc}</p>}</div>{button&&<button className="primary-btn" onClick={onClick}><Plus size={18}/>{button}</button>}</div>
 }

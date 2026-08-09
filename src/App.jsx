@@ -82,220 +82,47 @@ function App() {
   if(!session) return <Login onLogin={()=>setRefresh(x=>x+1)}/>;
   return <Shell data={data} refresh={()=>setRefresh(x=>x+1)} notify={notify}/>;
 }
-function Shell({ data, refresh, notify }) {
-  const [open, setOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const current =
-    menu.find(x => x[0] === location.pathname)?.[1] || "Dashboard";
-
-  async function logout() {
-    await supabase.auth.signOut();
-    navigate("/");
-  }
-
-  return (
-    <div className="app-shell">
-
-      <aside className={`sidebar ${open ? "open" : ""}`}>
-
-        {/* Pulsar */}
-        <div className="brand">
-          <img
-            src="/icons/pulsar-192.png"
-            alt="Pulsar"
-            className="brand-icon"
-          />
-
-          <div className="brand-text">
-            <strong>Pulsar</strong>
-            <span>Admin panel</span>
-          </div>
+function Shell({data,refresh,notify}) {
+  const [open,setOpen]=useState(false);
+  const [profileOpen,setProfileOpen]=useState(false);
+  const location=useLocation();
+  const navigate=useNavigate();
+  const current=menu.find(x=>x[0]===location.pathname)?.[1] || "Dashboard";
+  async function logout(){await supabase.auth.signOut();navigate("/");}
+  return <div className="app-shell">
+    <aside className={`sidebar ${open?"open":""}`}>
+      <div className="side-brand"><div className="brand-mark small"><GraduationCap size={20}/></div><div><b>Fizika Kursi</b><span>Admin panel</span></div><button className="mobile-close icon-btn" onClick={()=>setOpen(false)}><X size={18}/></button></div>
+      <nav>{menu.map(([to,label,Icon])=><NavLink key={to} to={to} end={to==="/"} onClick={()=>setOpen(false)} className={({isActive})=>isActive?"active":""}><Icon size={18}/><span>{label}</span></NavLink>)}</nav>
+      <button className="logout" onClick={logout}><LogOut size={18}/> Chiqish</button>
+    </aside>
+    <main className="main">
+      <header className="topbar">
+        <button className="icon-btn mobile-menu" onClick={()=>setOpen(true)}><Menu/></button>
+        <div><h2>{current}</h2><p>{new Date().toLocaleDateString("uz-UZ",{day:"numeric",month:"long",year:"numeric"})}</p></div>
+        <div className="top-actions">
+          <button className="avatar" onClick={()=>setProfileOpen(!profileOpen)}><ShieldCheck size={18}/></button>
+          {profileOpen && <div className="profile-pop"><b>Administrator</b><span>Admin hisob</span><button onClick={logout}>Chiqish</button></div>}
         </div>
-
-        <button
-          className="mobile-close icon-btn"
-          onClick={() => setOpen(false)}
-        >
-          <X size={20} />
-        </button>
-
-        {/* Menu */}
-        <nav>
-          {menu.map(([to, label, Icon]) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={to === "/"}
-              onClick={() => setOpen(false)}
-              className={({ isActive }) =>
-                isActive ? "active" : ""
-              }
-            >
-              <Icon size={19} />
-              <span>{label}</span>
-            </NavLink>
-          ))}
-        </nav>
-
-        {/* Chiqish */}
-        <button className="logout-btn" onClick={logout}>
-          <LogOut size={19} />
-          <span>Chiqish</span>
-        </button>
-
-      </aside>
-
-      <section className="main">
-
-        {/* Mobile menu */}
-        <button
-          className="icon-btn mobile-menu"
-          onClick={() => setOpen(true)}
-        >
-          <Menu size={22} />
-        </button>
-
-        {/* Header */}
-        <header className="topbar">
-
-          <div>
-            <h1>{current}</h1>
-
-            <p>
-              {new Date().toLocaleDateString("uz-UZ", {
-                day: "numeric",
-                month: "long",
-                year: "numeric"
-              })}
-            </p>
-          </div>
-
-          <div className="profile-wrapper">
-
-            <button
-              className="avatar"
-              onClick={() => setProfileOpen(!profileOpen)}
-            >
-              A
-            </button>
-
-            {profileOpen && (
-              <div className="profile-menu">
-                <strong>Administrator</strong>
-                <span>Admin hisob</span>
-
-                <button onClick={logout}>
-                  <LogOut size={16} />
-                  Chiqish
-                </button>
-              </div>
-            )}
-
-          </div>
-
-        </header>
-
-        {/* Pages */}
-        <div className="page-content">
-
-          <Routes>
-
-            <Route
-              path="/"
-              element={<Dashboard data={data} />}
-            />
-
-            <Route
-              path="/students"
-              element={
-                <Students
-                  data={data}
-                  refresh={refresh}
-                  notify={notify}
-                />
-              }
-            />
-
-            <Route
-              path="/groups"
-              element={
-                <Groups
-                  data={data}
-                  refresh={refresh}
-                  notify={notify}
-                />
-              }
-            />
-
-            <Route
-              path="/homework"
-              element={
-                <Homework
-                  data={data}
-                  refresh={refresh}
-                  notify={notify}
-                />
-              }
-            />
-
-            <Route
-              path="/penalties"
-              element={
-                <Penalties data={data} />
-              }
-            />
-
-            <Route
-              path="/payments"
-              element={
-                <Payments
-                  data={data}
-                  refresh={refresh}
-                  notify={notify}
-                />
-              }
-            />
-
-            <Route
-              path="/years"
-              element={
-                <Years
-                  data={data}
-                  refresh={refresh}
-                  notify={notify}
-                />
-              }
-            />
-
-            <Route
-              path="/settings"
-              element={
-                <SettingsPage
-                  data={data}
-                  refresh={refresh}
-                  notify={notify}
-                />
-              }
-            />
-
-            <Route
-              path="*"
-              element={<Navigate to="/" replace />}
-            />
-
-          </Routes>
-
-        </div>
-
-      </section>
-
-    </div>
-  );
+      </header>
+      <div className="content">
+        <Routes>
+          <Route path="/" element={<Dashboard data={data}/>}/>
+          <Route path="/students" element={<Students data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="/groups" element={<Groups data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="/homework" element={<Homework data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="/penalties" element={<Penalties data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="/payments" element={<Payments data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="/years" element={<Years data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="/settings" element={<SettingsPage data={data} refresh={refresh} notify={notify}/>}/>
+          <Route path="*" element={<Navigate to="/"/>}/>
+        </Routes>
+      </div>
+    </main>
+    <Toast toast={null}/>
+  </div>
 }
+
 function PageHead({title,desc,button,onClick}) {
   return <div className="page-head"><div><h1>{title}</h1>{desc&&<p>{desc}</p>}</div>{button&&<button className="primary-btn" onClick={onClick}><Plus size={18}/>{button}</button>}</div>
 }
